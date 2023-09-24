@@ -1,6 +1,6 @@
 # IgnoresAccessChecksTo VB Source Generator (MSBuild)
 
-[![NuGet](https://img.shields.io/nuget/v/IgnoresAccessChecksToGenerator.svg?style=flat-square)](https://www.nuget.org/packages/Nukepayload2.SourceGenerators.IgnoresAccessChecksTo)
+[![NuGet](https://img.shields.io/nuget/v/Nukepayload2.SourceGenerators.IgnoresAccessChecksTo.svg?style=flat-square)](https://www.nuget.org/packages/Nukepayload2.SourceGenerators.IgnoresAccessChecksTo)
 
 Since there's currently no compiler support for this attribute, this package can be used as a workaround. It **generates reference assemblies where all the internal types & members become public**, and adds a VB file with the attribute and its instances.
 
