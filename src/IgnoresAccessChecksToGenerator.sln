@@ -13,12 +13,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{D43D3D13
 EndProject
 Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "IgnoresAccessChecksToGenerator.VisualBasic.Tasks", "IgnoresAccessChecksToGenerator.VisualBasic.Tasks\IgnoresAccessChecksToGenerator.VisualBasic.Tasks.vbproj", "{D991ABD5-459F-4E5B-B9C7-9BC7D08E471B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildVB", "BuildVB", "{753012A2-7197-4259-BA35-40760C53FB69}"
-	ProjectSection(SolutionItems) = preProject
-		BuildVB\IgnoresAccessChecksToGenerator.VisualBasic.props = BuildVB\IgnoresAccessChecksToGenerator.VisualBasic.props
-		BuildVB\IgnoresAccessChecksToGenerator.VisualBasic.targets = BuildVB\IgnoresAccessChecksToGenerator.VisualBasic.targets
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

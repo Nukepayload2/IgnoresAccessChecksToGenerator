@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>IgnoresAccessChecksToGenerator.VBTest</RootNamespace>
+    <TargetFrameworks>net7.0;net48</TargetFrameworks>
+
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.1" />
+    <PackageReference Include="MSTest.TestAdapter" Version="2.2.10" />
+    <PackageReference Include="MSTest.TestFramework" Version="2.2.10" />
+    <PackageReference Include="coverlet.collector" Version="3.2.0" />
+    <PackageReference Include="Nukepayload2.SourceGenerators.IgnoresAccessChecksTo" Version="0.6.0" />
+    <InternalsAssemblyName Include="IgnoresAccessChecksToGenerator.VBTest.SourceAssembly" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\IgnoresAccessChecksToGenerator.VBTest.SourceAssembly\IgnoresAccessChecksToGenerator.VBTest.SourceAssembly.vbproj" />
+  </ItemGroup>
+
+</Project>
