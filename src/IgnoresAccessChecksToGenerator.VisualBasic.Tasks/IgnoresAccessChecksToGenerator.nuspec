@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>IgnoresAccessChecksToGenerator.VisualBasic</id>
+    <version>0.6.0</version>
+    <authors>Nukepayload2</authors>
+    <owners>Nukepayload2</owners>
+    <license type="expression">MIT</license>
+    <projectUrl>https://github.com/Nukepayload2/IgnoresAccessChecksToGenerator</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Generates IgnoresAccessChecksTo attributes and reference assemblies to allow compile-time access to internals</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2023</copyright>
+    <tags>IgnoresAccessChecksToGenerator internals vb</tags>
+  </metadata>
+  <files>
+    <file src="bin\Release\**\*.dll" target="tools" />
+    <file src="bin\Release\**\*.deps.json" target="tools" />
+    <file src="..\Build\**" target="build" />
+  </files>
+</package>
