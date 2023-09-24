@@ -13,7 +13,7 @@
     <PackageReference Include="MSTest.TestAdapter" Version="2.2.10" />
     <PackageReference Include="MSTest.TestFramework" Version="2.2.10" />
     <PackageReference Include="coverlet.collector" Version="3.2.0" />
-    <PackageReference Include="Nukepayload2.SourceGenerators.IgnoresAccessChecksTo" Version="1.0.0" />
+    <PackageReference Include="Nukepayload2.SourceGenerators.IgnoresAccessChecksTo" Version="*" PrivateAssets="All" />
     <InternalsAssemblyName Include="IgnoresAccessChecksToGenerator.VBTest.SourceAssembly" />
   </ItemGroup>
 

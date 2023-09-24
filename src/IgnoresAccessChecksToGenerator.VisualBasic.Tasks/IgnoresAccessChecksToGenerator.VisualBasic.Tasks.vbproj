@@ -13,7 +13,7 @@
     <Authors>Nukepayload2,aelij</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/Nukepayload2/IgnoresAccessChecksToGenerator</PackageProjectUrl>
-    <Description>Generates IgnoresAccessChecksTo attributes in VB projects and reference assemblies to allow compile-time access to internals. 
+    <Description>Generates IgnoresAccessChecksTo attributes in VB projects and reference assemblies to allow compile-time access to internals (Friend members in Visual Basic). 
 We recommend using PrivateAssets="all" in the package reference to prevent affecting other projects.</Description>
     <PackageReleaseNotes>Initial release. The core logics came from "IgnoresAccessChecksToGenerator, version=0.6.0".</PackageReleaseNotes>
     <Copyright>Copyright 2023 Nukepayload2 and contributers</Copyright>
@@ -21,6 +21,7 @@ We recommend using PrivateAssets="all" in the package reference to prevent affec
     <BuildOutputTargetFolder>tools</BuildOutputTargetFolder>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -60,5 +61,6 @@ We recommend using PrivateAssets="all" in the package reference to prevent affec
       <PackagePath>buildTransitive\$(TargetNetFramework)</PackagePath>
       <Pack>true</Pack>
     </None>
+    <None Include="README.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
 </Project>
