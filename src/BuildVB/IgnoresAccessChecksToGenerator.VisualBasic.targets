@@ -3,7 +3,7 @@
   <PropertyGroup>
     <_IACTG_TargetFramework Condition="'$(MSBuildRuntimeType)' == 'Core'">netstandard2.0</_IACTG_TargetFramework>
     <_IACTG_TargetFramework Condition="'$(MSBuildRuntimeType)' != 'Core'">net46</_IACTG_TargetFramework>
-    <_IACTG_TaskAssembly>$(MSBuildThisFileDirectory)..\tools\$(_IACTG_TargetFramework)\Nukepayload2.SourceGenerators.IgnoresAccessChecksTo.dll</_IACTG_TaskAssembly>
+    <_IACTG_TaskAssembly>$(MSBuildThisFileDirectory)..\..\tools\$(_IACTG_TargetFramework)\Nukepayload2.SourceGenerators.IgnoresAccessChecksTo.dll</_IACTG_TaskAssembly>
     <_IACTG_IntermediatePath>$(IntermediateOutputPath)/GeneratedPublicizedAssemblies</_IACTG_IntermediatePath>
   </PropertyGroup>
 
