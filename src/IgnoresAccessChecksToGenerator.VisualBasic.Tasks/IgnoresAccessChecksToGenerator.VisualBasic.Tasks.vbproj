@@ -1,10 +1,25 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net46</TargetFrameworks>
+    <TargetNet>netstandard2.0</TargetNet>
+    <TargetNetFramework>net46</TargetNetFramework>
+    <TargetFrameworks>$(TargetNet);$(TargetNetFramework)</TargetFrameworks>
     <RootNamespace>IgnoresAccessChecksToGenerator.VisualBasic.Tasks</RootNamespace>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
-    <NuspecFile>IgnoresAccessChecksToGenerator.nuspec</NuspecFile>
+    
+    <AssemblyName>Nukepayload2.SourceGenerators.IgnoresAccessChecksTo</AssemblyName>
+    <PackageId>$(AssemblyName)</PackageId>
+    <Version>0.6.0</Version>
+    <Authors>Nukepayload2,aelij</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/Nukepayload2/IgnoresAccessChecksToGenerator</PackageProjectUrl>
+    <Description>Generates IgnoresAccessChecksTo attributes and reference assemblies to allow compile-time access to internals</Description>
+    <PackageReleaseNotes>Initial convert from the C# version 0.6.0</PackageReleaseNotes>
+    <Copyright>Copyright 2023 Nukepayload2 and contributers</Copyright>
+    <PackageTags>IgnoresAccessChecksTo internals friend vb</PackageTags>
+    <BuildOutputTargetFolder>tools</BuildOutputTargetFolder>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,4 +38,26 @@
     <Copy SourceFiles="@(CopyRefs)" DestinationFolder="$(OutDir)" />
   </Target>
 
+  <ItemGroup>
+    <None Include="bin\$(Configuration)\$(TargetNet)\**\*.dll">
+      <PackagePath>tools\$(TargetNet)</PackagePath>
+      <Pack>true</Pack>
+    </None>
+    <None Include="bin\$(Configuration)\$(TargetNet)\**\*.deps.json">
+      <PackagePath>tools\$(TargetNet)</PackagePath>
+      <Pack>true</Pack>
+    </None>
+    <None Include="bin\$(Configuration)\$(TargetNetFramework)\**\*.dll">
+      <PackagePath>tools\$(TargetNetFramework)</PackagePath>
+      <Pack>true</Pack>
+    </None>
+    <None Include="..\BuildVB\**">
+      <PackagePath>buildTransitive\$(TargetNet)</PackagePath>
+      <Pack>true</Pack>
+    </None>
+    <None Include="..\BuildVB\**">
+      <PackagePath>buildTransitive\$(TargetNetFramework)</PackagePath>
+      <Pack>true</Pack>
+    </None>
+  </ItemGroup>
 </Project>
