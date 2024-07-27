@@ -4,12 +4,12 @@
     <_IACTG_TargetFramework Condition="'$(MSBuildRuntimeType)' == 'Core'">netstandard2.0</_IACTG_TargetFramework>
     <_IACTG_TargetFramework Condition="'$(MSBuildRuntimeType)' != 'Core'">net462</_IACTG_TargetFramework>
     <_IACTG_TaskAssembly>$(MSBuildThisFileDirectory)../tools/$(_IACTG_TargetFramework)/Nukepayload2.SourceGenerators.IgnoresAccessChecksTo.dll</_IACTG_TaskAssembly>
-    <_IACTG_IntermediatePath>$(IntermediateOutputPath)/IgnoresAccessChecksToGenerator</_IACTG_IntermediatePath>
+    <_IACTG_IntermediatePath>$(IntermediateOutputPath)IgnoresAccessChecksToGenerator</_IACTG_IntermediatePath>
     <_IACTG_CodeFilePath>$(_IACTG_IntermediatePath)/IgnoresAccessChecksTo.vb</_IACTG_CodeFilePath>
     <_IACTG_ManifestFilePath>$(_IACTG_IntermediatePath)/IgnoresAccessChecksToGenerator.manifest</_IACTG_ManifestFilePath>
   </PropertyGroup>
 
-  <UsingTask AssemblyFile="$(_IACTG_TaskAssembly)" TaskName="IgnoresAccessChecksToGenerator.Tasks.PublicizeInternals" />
+  <UsingTask AssemblyFile="$(_IACTG_TaskAssembly)" TaskName="IgnoresAccessChecksToGenerator.VisualBasic.Tasks.PublicizeInternals" />
 
   <!--
     MSBuild incremental build tracking only supports files, so we create a manifest that contains all the items we use as inputs.
@@ -27,7 +27,7 @@
       <_IACTG_ReferencePathJoin Include="@(ReferencePath)" InternalsAssemblyName="%(InternalsAssemblyName.Identity)" />
       <_IACTG_InputReferencePath Include="@(_IACTG_ReferencePathJoin)" Condition=" '%(Filename)' == '%(InternalsAssemblyName)' " />
       <_IACTG_ReferencePathJoin Remove="@(_IACTG_ReferencePathJoin)" />
-      <_IACTG_OutputReferencePath Include="@(_IACTG_InputReferencePath->'$(_IACTG_IntermediatePath)/%(Filename)%(Extension)')" OriginalItemSpec="%(Identity)" />
+      <_IACTG_OutputReferencePath Include="@(_IACTG_InputReferencePath->'$(MSBuildProjectDirectory)\$(_IACTG_IntermediatePath)/%(Filename)%(Extension)')" OriginalItemSpec="%(Identity)" />
     </ItemGroup>
     <ItemGroup>
       <_IACTG_Manifest Include="@(InternalsAssemblyExcludeTypeName)" />
@@ -47,7 +47,10 @@
                         IntermediateOutputPath="$(_IACTG_IntermediatePath)"
                         GeneratedCodeFilePath="$(_IACTG_CodeFilePath)" />
     <ItemGroup>
-      <ReferencePath Include="@(_IACTG_OutputReferencePath)" />
+      <_IACTG_OutputReferencePath Remove="@(_IACTG_OutputReferencePath->'%(ReferenceAssembly)')"/>
+      <ReferencePath Include="@(_IACTG_OutputReferencePath)">
+        <ReferenceAssembly>%(Identity)</ReferenceAssembly>
+      </ReferencePath>
       <ReferencePath Remove="@(_IACTG_OutputReferencePath->'%(OriginalItemSpec)')" />
       <Compile Include="$(_IACTG_CodeFilePath)" />
     </ItemGroup>
