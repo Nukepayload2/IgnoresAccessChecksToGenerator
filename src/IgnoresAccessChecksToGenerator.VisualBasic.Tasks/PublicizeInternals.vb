@@ -6,8 +6,6 @@ Imports Mono.Cecil
 Public Class PublicizeInternals
 	Inherits Task
 
-	Private Shared ReadOnly Semicolon() As Char = {";"c}
-
 	Private ReadOnly _resolver As New AssemblyResolver
 
 	<Required>
@@ -19,18 +17,10 @@ Public Class PublicizeInternals
 	<Required>
 	Public Property IntermediateOutputPath As String
 
-	Public Property ExcludeTypeNames As String
+	<Required>
+	Public Property GeneratedCodeFilePath() As String
 
-	Public Property UseEmptyMethodBodies As Boolean = True
-
-	<Output>
-	Public Property TargetReferences As ITaskItem()
-
-	<Output>
-	Public Property RemovedReferences As ITaskItem()
-
-	<Output>
-	Public Property GeneratedCodeFiles As ITaskItem()
+	Public Property ExcludeTypeNames() As ITaskItem()
 
 	Public Overrides Function Execute() As Boolean
 		If SourceReferences Is Nothing Then
@@ -43,6 +33,13 @@ Public Class PublicizeInternals
 			Return True
 		End If
 
+		Dim excludedTypeNames As HashSet(Of String)
+		If ExcludeTypeNames IsNot Nothing Then
+			excludedTypeNames = New HashSet(Of String)(ExcludeTypeNames.Select(Function(t) t.ItemSpec), StringComparer.OrdinalIgnoreCase)
+		Else
+			excludedTypeNames = New HashSet(Of String)(StringComparer.OrdinalIgnoreCase)
+		End If
+
 		Dim targetPath = IntermediateOutputPath
 		Directory.CreateDirectory(targetPath)
 
@@ -52,31 +49,16 @@ Public Class PublicizeInternals
 			_resolver.AddSearchDirectory(assemblyPath)
 		Next
 
-		Dim targetReferenceList As New List(Of ITaskItem)
-		Dim removedReferenceList = New List(Of ITaskItem)
-
 		For Each assembly In SourceReferences
 			Dim assemblyPath = GetFullFilePath(targetPath, assembly.ItemSpec)
 			Dim assemblyName = Path.GetFileNameWithoutExtension(assemblyPath)
 			If assemblyNameSet.Contains(assemblyName) Then
-				' ReSharper disable once AssignNullToNotNullAttribute
 				Dim targetAssemblyPath = Path.Combine(targetPath, Path.GetFileName(assemblyPath))
 
-				Dim targetAsemblyFileInfo = New FileInfo(targetAssemblyPath)
-				If Not targetAsemblyFileInfo.Exists OrElse targetAsemblyFileInfo.Length = 0 Then
-					CreatePublicAssembly(assemblyPath, targetAssemblyPath)
-					Log.LogMessageFromText("Created publicized assembly at " & targetAssemblyPath, MessageImportance.Normal)
-				Else
-					Log.LogMessageFromText("Publicized assembly already exists at " & targetAssemblyPath, MessageImportance.Low)
-				End If
-
-				targetReferenceList.Add(New TaskItem(targetAssemblyPath))
-				removedReferenceList.Add(assembly)
+				CreatePublicAssembly(assemblyPath, targetAssemblyPath, excludedTypeNames)
+				Log.LogMessageFromText("Created publicized assembly at " & targetAssemblyPath, MessageImportance.Normal)
 			End If
 		Next assembly
-
-		TargetReferences = targetReferenceList.ToArray()
-		RemovedReferences = removedReferenceList.ToArray()
 
 		Return True
 	End Function
@@ -95,21 +77,17 @@ Namespace Global.System.Runtime.CompilerServices
 	End Class
 End Namespace
 "
-		Dim filePath = System.IO.Path.Combine(path, "IgnoresAccessChecksTo.vb")
-		File.WriteAllText(filePath, content)
-
-		GeneratedCodeFiles = New ITaskItem() {New TaskItem(filePath)}
+		File.WriteAllText(GeneratedCodeFilePath, content)
 
 		Log.LogMessageFromText("Generated IgnoresAccessChecksTo attributes", MessageImportance.Low)
 	End Sub
 
-	Private Sub CreatePublicAssembly(source As String, target As String)
-		Dim types = If(ExcludeTypeNames Is Nothing, Array.Empty(Of String)(), ExcludeTypeNames.Split(Semicolon))
-
+	Private Sub CreatePublicAssembly(source As String, target As String, excludedTypeNames As HashSet(Of String))
 		Dim assembly = AssemblyDefinition.ReadAssembly(source, New ReaderParameters With {.AssemblyResolver = _resolver})
 
 		For Each [module] In assembly.Modules
-			For Each type In [module].GetTypes().Where(Function(type1) Not types.Contains(type1.FullName))
+			For Each type In [module].GetTypes().Where(Function(type1) Not excludedTypeNames.Contains(type1.FullName))
+
 				If Not type.IsNested AndAlso type.IsNotPublic Then
 					type.IsPublic = True
 				ElseIf type.IsNestedAssembly OrElse type.IsNestedFamilyOrAssembly OrElse type.IsNestedFamilyAndAssembly Then
@@ -123,13 +101,6 @@ End Namespace
 				Next field
 
 				For Each method In type.Methods
-					If UseEmptyMethodBodies AndAlso method.HasBody Then
-						Dim emptyBody = New Mono.Cecil.Cil.MethodBody(method)
-						emptyBody.Instructions.Add(Mono.Cecil.Cil.Instruction.Create(Mono.Cecil.Cil.OpCodes.Ldnull))
-						emptyBody.Instructions.Add(Mono.Cecil.Cil.Instruction.Create(Mono.Cecil.Cil.OpCodes.Throw))
-						method.Body = emptyBody
-					End If
-
 					If method.IsAssembly OrElse method.IsFamilyOrAssembly OrElse method.IsFamilyAndAssembly Then
 						method.IsPublic = True
 					End If

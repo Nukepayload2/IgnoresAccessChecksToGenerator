@@ -1,31 +1,32 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetNet>netstandard2.0</TargetNet>
-    <TargetNetFramework>net46</TargetNetFramework>
+    <TargetNetFramework>net462</TargetNetFramework>
     <TargetFrameworks>$(TargetNet);$(TargetNetFramework)</TargetFrameworks>
     <RootNamespace>IgnoresAccessChecksToGenerator.VisualBasic.Tasks</RootNamespace>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
     
     <AssemblyName>Nukepayload2.SourceGenerators.IgnoresAccessChecksTo</AssemblyName>
     <PackageId>$(AssemblyName)</PackageId>
-    <Version>1.0.0</Version>
+    <Version>1.0.1-rc1</Version>
     <Authors>Nukepayload2,aelij</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/Nukepayload2/IgnoresAccessChecksToGenerator</PackageProjectUrl>
-    <Description>Generates IgnoresAccessChecksTo attributes in VB projects and reference assemblies to allow compile-time access to internals (Friend members in Visual Basic). 
+    <Description>Generates IgnoresAccessChecksTo attributes in VB projects and reference assemblies to allow compile-time access to Friend members. 
 We recommend using PrivateAssets="all" in the package reference to prevent affecting other projects.</Description>
-    <PackageReleaseNotes>Initial release. The core logics came from "IgnoresAccessChecksToGenerator, version=0.6.0".</PackageReleaseNotes>
+    <PackageReleaseNotes>Improved incremental build support. The core logics came from "IgnoresAccessChecksToGenerator, version=0.7.0".</PackageReleaseNotes>
     <Copyright>Copyright 2023 Nukepayload2 and contributers</Copyright>
     <PackageTags>IgnoresAccessChecksTo internals friend vb</PackageTags>
     <BuildOutputTargetFolder>tools</BuildOutputTargetFolder>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <OptionStrict>On</OptionStrict>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Mono.Cecil" Version="0.11.3" PrivateAssets="all" />
+    <PackageReference Include="Mono.Cecil" Version="0.11.5" PrivateAssets="all" />
     <PackageReference Include="Microsoft.Build.Tasks.Core" Version="15.1.1012" PrivateAssets="all" />
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="all">
       <PrivateAssets>all</PrivateAssets>
@@ -41,26 +42,26 @@ We recommend using PrivateAssets="all" in the package reference to prevent affec
   </Target>
 
   <ItemGroup>
-    <None Include="bin\$(Configuration)\$(TargetNet)\**\*.dll">
+    <None Include="bin\$(Configuration)\$(TargetNet)\$(AssemblyName).dll">
       <PackagePath>tools\$(TargetNet)</PackagePath>
       <Pack>true</Pack>
     </None>
-    <None Include="bin\$(Configuration)\$(TargetNet)\**\*.deps.json">
-      <PackagePath>tools\$(TargetNet)</PackagePath>
-      <Pack>true</Pack>
-    </None>
-    <None Include="bin\$(Configuration)\$(TargetNetFramework)\**\*.dll">
+    <None Include="bin\$(Configuration)\$(TargetNetFramework)\$(AssemblyName).dll">
       <PackagePath>tools\$(TargetNetFramework)</PackagePath>
       <Pack>true</Pack>
     </None>
-    <None Include="..\BuildVB\**">
-      <PackagePath>buildTransitive\$(TargetNet)</PackagePath>
+    <None Include="bin\$(Configuration)\$(TargetNet)\Mono.Cecil.dll">
+      <PackagePath>tools\$(TargetNet)</PackagePath>
       <Pack>true</Pack>
     </None>
-    <None Include="..\BuildVB\**">
-      <PackagePath>buildTransitive\$(TargetNetFramework)</PackagePath>
+    <None Include="bin\$(Configuration)\$(TargetNetFramework)\Mono.Cecil.dll">
+      <PackagePath>tools\$(TargetNetFramework)</PackagePath>
       <Pack>true</Pack>
     </None>
-    <None Include="README.md" Pack="true" PackagePath="\"/>
+    <None Include="build\**">
+      <PackagePath>build</PackagePath>
+      <Pack>true</Pack>
+    </None>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
 </Project>
