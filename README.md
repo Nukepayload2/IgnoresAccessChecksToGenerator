@@ -14,6 +14,7 @@ Just add the package and define `InternalsAssemblyName` items with the assemblie
   <ItemGroup>
     <InternalsAssemblyName Include="AssemblyToGrantAccessTo1" />
     <InternalsAssemblyName Include="AssemblyToGrantAccessTo2" />
+    <InternalsAssemblyExcludeTypeName Include="Namespace.TypeName" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,12 +22,4 @@ Just add the package and define `InternalsAssemblyName` items with the assemblie
   </ItemGroup>
 
 </Project>
-```
-
-By default, the build tasks replaces all method bodies with `Throw New NullReferenceException`. To keep the original bodies, you can specify:
-
-```xml
-  <PropertyGroup>
-    <InternalsAssemblyUseEmptyMethodBodies>false</InternalsAssemblyUseEmptyMethodBodies>
-  </PropertyGroup>
 ```
