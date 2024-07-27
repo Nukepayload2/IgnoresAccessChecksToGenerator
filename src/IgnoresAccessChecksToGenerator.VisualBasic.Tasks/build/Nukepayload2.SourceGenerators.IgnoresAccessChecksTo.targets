@@ -27,7 +27,7 @@
       <_IACTG_ReferencePathJoin Include="@(ReferencePath)" InternalsAssemblyName="%(InternalsAssemblyName.Identity)" />
       <_IACTG_InputReferencePath Include="@(_IACTG_ReferencePathJoin)" Condition=" '%(Filename)' == '%(InternalsAssemblyName)' " />
       <_IACTG_ReferencePathJoin Remove="@(_IACTG_ReferencePathJoin)" />
-      <_IACTG_OutputReferencePath Include="@(_IACTG_InputReferencePath->'$(MSBuildProjectDirectory)\$(_IACTG_IntermediatePath)/%(Filename)%(Extension)')" OriginalItemSpec="%(Identity)" />
+      <_IACTG_OutputReferencePath Include="@(_IACTG_InputReferencePath->'$(MSBuildProjectDirectory)/$(_IACTG_IntermediatePath)/%(Filename)%(Extension)')" OriginalItemSpec="%(Identity)" />
     </ItemGroup>
     <ItemGroup>
       <_IACTG_Manifest Include="@(InternalsAssemblyExcludeTypeName)" />
